@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أذكارى - Azkari</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        
+        :root {
+            --bg-color: #0F0F0F;
+            --text-color: #F5F5F5;
+            --accent-color: #2196F3;
+            --card-bg: #121212;
+            --shadow-color: rgba(33, 150, 243, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Tajawal', sans-serif;
+            line-height: 1.6;
+            padding-bottom: 70px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 5px;
+            box-shadow: 0 4px 10px var(--shadow-color);
+        }
+        
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            margin: 0 5px;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .tab.active {
+            background-color: var(--accent-color);
+            color: #FFF;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .dhikr-text {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+        
+        .dhikr-source {
+            font-size: 0.9rem;
+            color: #999;
+            margin-bottom: 10px;
+        }
+        
+        .dhikr-count {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            display: inline-block;
+            margin-right: 15px;
+        }
+        
+        .checkbox {
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            cursor: pointer;
+            vertical-align: middle;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        
+        .checkbox.checked:after {
+            content: "✓";
+            position: absolute;
+            color: var(--accent-color);
+            font-size: 16px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        /* Counter Section */
+        .counter-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .counter-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            box-shadow: 0 0 20px var(--shadow-color);
+            border: 2px solid var(--accent-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .counter-circle:before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .counter-number {
+            font-size: 3.5rem;
+            color: var(--text-color);
+            font-weight: bold;
+        }
+        
+        .counter-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .preset-btn {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--accent-color);
+            border-radius: 10px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .preset-btn:hover {
+            background-color: var(--accent-color);
+            color: #FFF;
+        }
+        
+        .reset-btn {
+            background-color: transparent;
+            color: #ff5252;
+            border: 1px solid #ff5252;
+            border-radius: 10px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .reset-btn:hover {
+            background-color: #ff5252;
+            color: #FFF;
+        }
+        
+        /* Names Section */
+        .names-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+        }
+        
+        .name-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+        
+        .name-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px var(--shadow-color);
+        }
+        
+        .name-arabic {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            color: var(--accent-color);
+        }
+        
+        .name-meaning {
+            font-size: 0.8rem;
+            color: #999;
+        }
+        
+        /* About Section */
+        .about-section {
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .developer-info {
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        
+        .contact-email {
+            color: var(--accent-color);
+            text-decoration: none;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .prayer-request {
+            font-size: 1.1rem;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 12px;
+            background-color: var(--card-bg);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+        
+        .prayer-icon {
+            font-size: 1.5rem;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        
+        /* Navigation */
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--card-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+        
+        .nav-item {
+            padding: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+        
+        .nav-item.active {
+            color: var(--accent-color);
+        }
+        
+        .nav-item i {
+            font-size: 1.3rem;
+            margin-bottom: 3px;
+            display: block;
+        }
+        
+        .nav-text {
+            font-size: 0.7rem;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>أذكارى</h1>
+            <p>تطبيق الأذكار اليومية</p>
+        </header>
+        
+        <!-- أذكار الصباح والمساء -->
+        <div id="adhkar-section" class="tab-content active">
+            <div class="tabs">
+                <div class="tab active" data-target="morning">أذكار الصباح</div>
+                <div class="tab" data-target="evening">أذكار المساء</div>
+            </div>
+            
+            <div id="morning-content" class="inner-content active">
+                <!-- ذكر 1 -->
+                <div class="card">
+                    <div class="dhikr-text">أَعُوذُ بِاللهِ مِنْ الشَّيْطَانِ الرَّجِيمِ: اللّهُ لاَ إِلَـهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ لاَ تَأْخُذُهُ سِنَةٌ وَلاَ نَوْمٌ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الأَرْضِ...</div>
+                    <div class="dhikr-source">البقرة: 255</div>
+                    <div class="dhikr-count">مرة واحدة</div>
+                    <div class="checkbox"></div>
+                </div>
+                
+                <!-- ذكر 2 -->
+                <div class="card">
+                    <div class="dhikr-text">أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَـهَ إِلاَّ اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ.</div>
+                    <div class="dhikr-source">رواه أبو داود</div>
+                    <div class="dhikr-count">مرة واحدة</div>
+                    <div class="checkbox"></div>
+                </div>
+                
+                <!-- ذكر 3 -->
+                <div class="card">
+                    <div class="dhikr-text">سُبْحَانَ اللهِ وَبِحَمْدِهِ، عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ.</div>
+                    <div class="dhikr-source">رواه مسلم</div>
+                    <div class="dhikr-count">3 مرات</div>
+                    <div class="checkbox"></div>
+                </div>
+            </div>
+            
+            <div id="evening-content" class="inner-content">
+                <!-- ذكر 1 مساء -->
+                <div class="card">
+                    <div class="dhikr-text">أَمْسَيْنَا وَأَمْسَى الْمُلْكُ للهِ، وَالْحَمْدُ للهِ، لَا إِلَهَ إِلاَّ اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ.</div>
+                    <div class="dhikr-source">رواه أبو داود</div>
+                    <div class="dhikr-count">مرة واحدة</div>
+                    <div class="checkbox"></div>
+                </div>
+                
+                <!-- ذكر 2 مساء -->
+                <div class="card">
+                    <div class="dhikr-text">أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ.</div>
+                    <div class="dhikr-source">رواه الترمذي</div>
+                    <div class="dhikr-count">3 مرات</div>
+                    <div class="checkbox"></div>
+                </div>
+                
+                <!-- ذكر 3 مساء -->
+                <div class="card">
+                    <div class="dhikr-text">اللَّهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ الْمَصِيرُ.</div>
+                    <div class="dhikr-source">رواه الترمذي</div>
+                    <div class="dhikr-count">مرة واحدة</div>
+                    <div class="checkbox"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- مسبحة أذكار ما بعد الصلاة -->
+        <div id="counter-section" class="tab-content">
+            <div class="counter-container">
+                <div class="counter-circle">
+                    <div class="counter-number">0</div>
+                </div>
+                
+                <div class="counter-buttons">
+                    <button class="preset-btn" data-dhikr="سبحان الله" data-count="33">سبحان الله (33)</button>
+                    <button class="preset-btn" data-dhikr="الحمد لله" data-count="33">الحمد لله (33)</button>
+                    <button class="preset-btn" data-dhikr="الله أكبر" data-count="33">الله أكبر (33)</button>
+                </div>
+                
+                <button class="reset-btn">إعادة ضبط</button>
+            </div>
+        </div>
+        
+        <!-- أسماء الله الحسنى -->
+        <div id="names-section" class="tab-content">
+            <div class="names-grid">
+                <div class="name-card" data-name="الرحمن">
+                    <div class="name-arabic">الرحمن</div>
+                    <div class="name-meaning">الرحمة الواسعة</div>
+                </div>
+                <div class="name-card" data-name="الرحيم">
+                    <div class="name-arabic">الرحيم</div>
+                    <div class="name-meaning">الرحمة الدائمة</div>
+                </div>
+                <div class="name-card" data-name="الملك">
+                    <div class="name-arabic">الملك</div>
+                    <div class="name-meaning">مالك كل شيء</div>
+                </div>
+                <div class="name-card" data-name="القدوس">
+                    <div class="name-arabic">القدوس</div>
+                    <div class="name-meaning">المنزه عن النقائص</div>
+                </div>
+                <div class="name-card" data-name="السلام">
+                    <div class="name-arabic">السلام</div>
+                    <div class="name-meaning">السالم من العيوب</div>
+                </div>
+                <div class="name-card" data-name="المؤمن">
+                    <div class="name-arabic">المؤمن</div>
+                    <div class="name-meaning">الذي يؤمن خلقه</div>
+                </div>
+                <div class="name-card" data-name="المهيمن">
+                    <div class="name-arabic">المهيمن</div>
+                    <div class="name-meaning">الرقيب على خلقه</div>
+                </div>
+                <div class="name-card" data-name="العزيز">
+                    <div class="name-arabic">العزيز</div>
+                    <div class="name-meaning">القوي الغالب</div>
+                </div>
+                <div class="name-card" data-name="الجبار">
+                    <div class="name-arabic">الجبار</div>
+                    <div class="name-meaning">العظيم القاهر</div>
+                </div>
+                <!-- المزيد من الأسماء يمكن إضافتها هنا -->
+            </div>
+        </div>
+        
+        <!-- عن التطبيق -->
+        <div id="about-section" class="tab-content">
+            <div class="about-section">
+                <div class="developer-info">إعداد المهندس حسين شلبى © 2025 | Shalaby Tech – جميع الحقوق محفوظة</div>
+                <a href="mailto:hussein.meghed.te@gmail.com" class="contact-email">hussein.meghed.te@gmail.com</a>
+                
+                <div class="prayer-request">
+                    الرجاء الدعاء لأبي وأمي وأختي ولكل من رحل عنا ❤️
+                    <div class="prayer-icon">🤲</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- شريط التنقل -->
+    <div class="nav-bar">
+        <div class="nav-item active" data-section="adhkar-section">
+            <i class="fas fa-book-open"></i>
+            <div class="nav-text">الأذكار</div>
+        </div>
+        <div class="nav-item" data-section="counter-section">
+            <i class="fas fa-hand-point-up"></i>
+            <div class="nav-text">المسبحة</div>
+        </div>
+        <div class="nav-item" data-section="names-section">
+            <i class="fas fa-star"></i>
+            <div class="nav-text">أسماء الله</div>
+        </div>
+        <div class="nav-item" data-section="about-section">
+            <i class="fas fa-info-circle"></i>
+            <div class="nav-text">عن التطبيق</div>
+        </div>
+    </div>
+    
+    <script>
+        // التبديل بين الأقسام
+        const navItems = document.querySelectorAll('.nav-item');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const targetSection = item.getAttribute('data-section');
+                
+                // تحديث شريط التنقل
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+                
+                // تحديث المحتوى
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === targetSection) {
+                        content.classList.add('active');
+                    }
+                });
+            });
+        });
+        
+        // التبديل بين أذكار الصباح والمساء
+        const tabs = document.querySelectorAll('.tab');
+        const innerContents = document.querySelectorAll('.inner-content');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.getAttribute('data-target');
+                
+                // تحديث التبويبات
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // تحديث المحتوى
+                innerContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === `${target}-content`) {
+                        content.classList.add('active');
+                    }
+                });
+            });
+        });
+        
+        // مربعات الاختيار
+        const checkboxes = document.querySelectorAll('.checkbox');
+        
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('click', () => {
+                checkbox.classList.toggle('checked');
+            });
+        });
+        
+        // المسبحة
+        const counterNumber = document.querySelector('.counter-number');
+        const counterCircle = document.querySelector('.counter-circle');
+        const presetButtons = document.querySelectorAll('.preset-btn');
+        const resetButton = document.querySelector('.reset-btn');
+        
+        let count = 0;
+        let currentDhikr = '';
+        let targetCount = 0;
+        
+        counterCircle.addEventListener('click', () => {
+            if (count < targetCount || targetCount === 0) {
+                count++;
+                counterNumber.textContent = count;
+                animatePulse(counterCircle);
+                
+                // إذا وصلنا للعدد المستهدف
+                if (count === targetCount && targetCount !== 0) {
+                    // تأثير وصول للهدف
+                    counterCircle.style.boxShadow = '0 0 30px rgba(33, 150, 243, 0.6)';
+                    setTimeout(() => {
+                        counterCircle.style.boxShadow = '0 0 20px var(--shadow-color)';
+                    }, 1000);
+                }
+            }
+        });
+        
+        presetButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                currentDhikr = button.getAttribute('data-dhikr');
+                targetCount = parseInt(button.getAttribute('data-count'));
+                count = 0;
+                counterNumber.textContent = count;
+                
+                // تحديث العنوان النشط
+                presetButtons.forEach(btn => {
+                    btn.style.backgroundColor = 'var(--card-bg)';
+                    btn.style.color = 'var(--text-color)';
+                });
+                button.style.backgroundColor = 'var(--accent-color)';
+                button.style.color = '#FFF';
+            });
+        });
+        
+        resetButton.addEventListener('click', () => {
+            count = 0;
+            counterNumber.textContent = count;
+            
+            // إعادة ضبط التصميم
+            presetButtons.forEach(btn => {
+                btn.style.backgroundColor = 'var(--card-bg)';
+                btn.style.color = 'var(--text-color)';
+            });
+        });
+        
+        function animatePulse(element) {
+            element.style.animation = 'pulse 0.3s ease';
+            setTimeout(() => {
+                element.style.animation = '';
+            }, 300);
+        }
+        
+        // بطاقات أسماء الله
+        const nameCards = document.querySelectorAll('.name-card');
+        let nameCounter = document.createElement('div');
+        nameCounter.className = 'counter-container';
+        nameCounter.style.display = 'none';
+        document.getElementById('names-section').appendChild(nameCounter);
+        
+        nameCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const name = card.getAttribute('data-name');
+                const nameArabic = card.querySelector('.name-arabic').textContent;
+                const nameMeaning = card.querySelector('.name-meaning').textContent;
+                
+                // إنشاء وعرض مسبحة الاسم
+                nameCounter.innerHTML = `
+                    <div class="card" style="text-align: center; margin-top: 20px;">
+                        <div style="font-size: 1.8rem; color: var(--accent-color); margin-bottom: 10px;">${nameArabic}</div>
+                        <div style="margin-bottom: 15px; color: #999;">${nameMeaning}</div>
+                        <div class="counter-circle" style="width: 120px; height: 120px; margin-bottom: 15px;">
+                            <div class="counter-number name-count">0</div>
+                        </div>
+                        <button class="preset-btn name-dhikr-btn">تسبيح</button>
+                        <button class="reset-btn" style="margin-top: 10px;">إعادة ضبط</button>
+                        <button class="back-btn" style="margin-top: 15px; background: transparent; border: 1px solid #999; color: #999; padding: 8px 15px; border-radius: 10px; cursor: pointer;">العودة للأسماء</button>
+                    </div>
+                `;
+                
+                // إخفاء شبكة الأسماء وعرض المسبحة
+                document.querySelector('.names-grid').style.display = 'none';
+                nameCounter.style.display = 'block';
+                
+                // تفعيل المسبحة للاسم
+                const nameCounterCircle = nameCounter.querySelector('.counter-circle');
+                const nameCounterNumber = nameCounter.querySelector('.name-count');
+                const nameResetButton = nameCounter.querySelector('.reset-btn');
+                const nameBackButton = nameCounter.querySelector('.back-btn');
+                const nameDhikrButton = nameCounter.querySelector('.name-dhikr-btn');
+                
+                let nameCount = 0;
+                
+                nameCounterCircle.addEventListener('click', function() {
+                    nameCount++;
+                    nameCounterNumber.textContent = nameCount;
+                    animatePulse(nameCounterCircle);
+                });
+                
+                nameDhikrButton.addEventListener('click', function() {
+                    nameCount++;
+                    nameCounterNumber.textContent = nameCount;
+                    animatePulse(nameCounterCircle);
+                });
+                
+                nameResetButton.addEventListener('click', function() {
+                    nameCount = 0;
+                    nameCounterNumber.textContent = nameCount;
+                });
+                
+                nameBackButton.addEventListener('click', function() {
+                    // العودة إلى قائمة الأسماء
+                    document.querySelector('.names-grid').style.display = 'grid';
+                    nameCounter.style.display = 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
